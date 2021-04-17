@@ -9,6 +9,7 @@ A Sketch tool for React based applications, backed-up by [FabricJS](http://fabri
 
 ![idea-image] _Please note that this module is still in development! Feel free to send me enhancements and ideas :)_
 
+### Just a fork to enable install via NPM under the name react-sketch-master
 
 ## Installation
 
