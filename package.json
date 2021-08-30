@@ -1,6 +1,6 @@
 {
   "name": "react-sketch-master",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Sketch Element for React based applications, backed-up by fabricjs as its core",
   "keywords": [
     "react",
@@ -135,7 +135,7 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "react": "x.0.2",
-    "react-dom": "x.0.2"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }
