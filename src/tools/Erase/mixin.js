@@ -48,7 +48,6 @@ const fabric = require("fabric").fabric;
     },
 
     setBackgroundColor: function (backgroundColor, callback, options) {
-      console.log({...options, erasable: false},'what we have here?>?.')
       return this.__setBgOverlayColor('backgroundColor', backgroundColor, callback, {...options, erasable: false});
     },
 
