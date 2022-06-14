@@ -9,4 +9,6 @@ export default {
   Pan: "pan",
   Highlighter: "highlighter",
   DefaultTool: "default-tool",
+  EraseBrush: "eraseBrush",
+  Triangle: "triangle",
 };

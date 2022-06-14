@@ -24,4 +24,7 @@ html {
   margin: 7px 0 0 7px;
   border: 1px solid #0d3349;
   background-color: #ffffff;
+  max-height: 420px;
+  height: auto;
+  overflow: auto;
 }

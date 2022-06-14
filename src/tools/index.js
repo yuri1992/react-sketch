@@ -1,4 +1,6 @@
 import Arrow from "./Arrow";
+import EraseBrush from "./Erase";
+import Triangle from "./Triangle"
 import Circle from "./Circle";
 import Highlighter from "./Highlighter";
 import Line from "./Line";
@@ -20,4 +22,6 @@ export default {
   RectangleLabel,
   Select,
   DefaultTool,
+  EraseBrush,
+  Triangle,
 };

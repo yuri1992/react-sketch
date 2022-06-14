@@ -130,8 +130,8 @@ class SketchFieldDemo extends React.Component {
       canRedo: false,
       controlledSize: false,
       sketchWidth: 600,
-      sketchHeight: 600,
-      stretched: true,
+      sketchHeight: 512,
+      stretched: false,
       stretchedX: false,
       stretchedY: false,
       originX: "left",
@@ -256,7 +256,7 @@ class SketchFieldDemo extends React.Component {
             stretched: stretched,
             stretchedX: stretchedX,
             stretchedY: stretchedY,
-            originX: originX,
+            originX: 'center',
             originY: originY,
           }),
         false
@@ -304,6 +304,9 @@ class SketchFieldDemo extends React.Component {
         a.dispatchEvent(e);
       };
     })(console);
+    setTimeout( () => {
+      this._sketch.setBackgroundImage('https://via.placeholder.com/500x400.png/09f/fff');
+    },3000)
   };
 
   render = () => {
@@ -375,13 +378,14 @@ class SketchFieldDemo extends React.Component {
               }
               width={this.state.controlledSize ? this.state.sketchWidth : null}
               height={
-                this.state.controlledSize ? this.state.sketchHeight : null
+                this.state.controlledSize ? this.state.sketchHeight : "auto"
               }
               defaultValue={dataJson}
               value={controlledValue}
               forceValue
               onChange={this._onSketchChange}
               tool={this.state.tool}
+              autoScale
             />
           </div>
           <div className="col-xs-5 col-sm-5 col-md-3 col-lg-3">
@@ -415,6 +419,9 @@ class SketchFieldDemo extends React.Component {
                         </MenuItem>
                         <MenuItem value={Tools.Pencil} key="Pencil">
                           Pencil
+                        </MenuItem>
+                        <MenuItem value={Tools.EraseBrush} key="EraseBrush">
+                          EraseBrush
                         </MenuItem>
                         <MenuItem value={Tools.Line} key="Line">
                           Line

@@ -9,6 +9,8 @@ import Tool from "./tools";
 import DefaultTool from "./tools/defaul-tool";
 import Select from "./tools/Select";
 import Pencil from "./tools/Pencil";
+import EraseBrush from "./tools/Erase";
+import Triangle from "./tools/Triangle"
 import Line from "./tools/Line";
 import Rectangle from "./tools/Rectangle";
 import RectangleLabel from "./tools/Rectangle/rectangle-label";
@@ -80,6 +82,8 @@ class SketchField extends PureComponent {
     className: PropTypes.string,
     // Style options to pass to container div of canvas
     style: PropTypes.object,
+    // Set scaling with respect of aspect ratio depends on container width
+    autoScale: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -112,6 +116,8 @@ class SketchField extends PureComponent {
     this._tools = {};
     this._tools[Tool.Select] = new Select(fabricCanvas);
     this._tools[Tool.Pencil] = new Pencil(fabricCanvas);
+    this._tools[Tool.EraseBrush] = new EraseBrush(fabricCanvas);
+    this._tools[Tool.Triangle] = new Triangle(fabricCanvas);
     this._tools[Tool.Line] = new Line(fabricCanvas);
     this._tools[Tool.Arrow] = new Arrow(fabricCanvas);
     this._tools[Tool.Rectangle] = new Rectangle(fabricCanvas);
@@ -297,7 +303,22 @@ class SketchField extends PureComponent {
     }
     onMouseUp(e);
   };
-
+  
+  _scaleObject(obj, wfactor, hfactor) {
+    let scaleX = obj.scaleX;
+    let scaleY = obj.scaleY;
+    let left = obj.left;
+    let top = obj.top;
+    let tempScaleX = scaleX * wfactor;
+    let tempScaleY = scaleY * hfactor;
+    let tempLeft = left * wfactor;
+    let tempTop = top * hfactor;
+    obj.scaleX = tempScaleX;
+    obj.scaleY = tempScaleY;
+    obj.left = tempLeft;
+    obj.top = tempTop;
+    obj.setCoords();
+  }
   /**
    * Track the resize of the window and update our state
    *
@@ -309,14 +330,22 @@ class SketchField extends PureComponent {
     let { widthCorrection, heightCorrection } = this.props;
     let canvas = this._fc;
     let { offsetWidth, clientHeight } = this._container;
+    const { autoScale } = this.props;
     let prevWidth = canvasWidth || canvas.getWidth();
     let prevHeight = canvasHeight || canvas.getHeight();
     let wfactor = ((offsetWidth - widthCorrection) / prevWidth).toFixed(2);
-    let hfactor = ((clientHeight - heightCorrection) / prevHeight).toFixed(2);
+    let hfactor = autoScale ? wfactor : ((clientHeight - heightCorrection) / prevHeight).toFixed(2);
+    const newHeight = autoScale ? prevHeight * hfactor - heightCorrection : clientHeight - heightCorrection;
     canvas.setWidth(offsetWidth - widthCorrection);
-    canvas.setHeight(clientHeight - heightCorrection);
-    if (canvas.backgroundImage) {
-      // Need to scale background images as well
+    canvas.setHeight(isNaN(newHeight) ? clientHeight - heightCorrection : newHeight);
+    if (canvas.backgroundColor && autoScale) {
+      canvas.backgroundColor.width = prevWidth * wfactor;
+      canvas.backgroundColor.height = prevHeight * hfactor;
+    }
+    if (canvas.backgroundImage && autoScale) {
+      this._scaleObject(canvas.backgroundImage, wfactor, hfactor)
+    }
+    if (canvas.backgroundImage && !autoScale) {
       let bi = canvas.backgroundImage;
       bi.width = bi.width * wfactor;
       bi.height = bi.height * hfactor;
@@ -324,19 +353,7 @@ class SketchField extends PureComponent {
     let objects = canvas.getObjects();
     for (let i in objects) {
       let obj = objects[i];
-      let scaleX = obj.scaleX;
-      let scaleY = obj.scaleY;
-      let left = obj.left;
-      let top = obj.top;
-      let tempScaleX = scaleX * wfactor;
-      let tempScaleY = scaleY * hfactor;
-      let tempLeft = left * wfactor;
-      let tempTop = top * hfactor;
-      obj.scaleX = tempScaleX;
-      obj.scaleY = tempScaleY;
-      obj.left = tempLeft;
-      obj.top = tempTop;
-      obj.setCoords();
+      this._scaleObject(obj, wfactor, hfactor)
     }
     canvas.renderAll();
     canvas.calcOffset();
@@ -489,6 +506,7 @@ class SketchField extends PureComponent {
           canvas.isDrawingMode = canvas.selection = false;
           canvas.forEachObject((o) => (o.selectable = o.evented = false));
         }
+        this._resize(null, 1345, 673)
         canvas.renderAll();
         if (this.props.onChange) {
           this.props.onChange();
@@ -600,6 +618,17 @@ class SketchField extends PureComponent {
       );
     };
     img.src = dataUrl;
+  };
+  
+  setBackgroundImage = (url, options = {}) => {
+    let canvas = this._fc;
+    fabric.Image.fromURL(url, (oImg) => {
+        canvas.setBackgroundImage(url, canvas.renderAll.bind(canvas), {
+        erasable: false,
+        left: canvas.getCenter().left - oImg.width / 2,
+        ...options
+      });
+    });
   };
 
   addText = (text, options = {}) => {

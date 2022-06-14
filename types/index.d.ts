@@ -11,6 +11,8 @@ declare module "react-sketch" {
     Select: string;
     Pan: string;
     DefaultTool: string;
+    EraseBrush: string;
+    Triangle: string;
   } = {
     Circle: "circle",
     Line: "line",
@@ -21,6 +23,8 @@ declare module "react-sketch" {
     Select: "select",
     Pan: "pan",
     DefaultTool: "default-tool",
+    EraseBrush: "eraseBrush",
+    Triangle: "triangle",
   };
   export class SketchField extends React.PureComponent<{
     // the color of the line
@@ -203,6 +207,17 @@ declare module "react-sketch" {
         stretchedY?: boolean;
         [name: string]: any;
       }
+    ): void;
+    
+    /**
+     * Sets the background from the dataUrl given
+     *
+     * @param dataUrl the dataUrl to be used as a background
+     * @param options
+     */
+    setBackgroundImage(
+      url: string,
+      options?: object
     ): void;
 
     addText(text: string, options?: {}): void;
