@@ -304,9 +304,6 @@ class SketchFieldDemo extends React.Component {
         a.dispatchEvent(e);
       };
     })(console);
-    setTimeout( () => {
-      this._sketch.setBackgroundImage('https://via.placeholder.com/500x400.png/09f/fff');
-    },3000)
   };
 
   render = () => {
@@ -422,6 +419,9 @@ class SketchFieldDemo extends React.Component {
                         </MenuItem>
                         <MenuItem value={Tools.EraseBrush} key="EraseBrush">
                           EraseBrush
+                        </MenuItem>
+                        <MenuItem value={Tools.Star} key="Star">
+                          Star
                         </MenuItem>
                         <MenuItem value={Tools.Line} key="Line">
                           Line

@@ -221,5 +221,7 @@ declare module "react-sketch" {
     ): void;
 
     addText(text: string, options?: {}): void;
+    
+    addTextToPoint(text: string, options?: {}): void;
   }
 }

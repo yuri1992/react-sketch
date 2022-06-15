@@ -713,6 +713,5 @@ const fabric = require("fabric").fabric;
       }
     }
   );
-  console.log("SHOULD CREATE EREASE BRUSH");
   /** ERASER_END */
 })();

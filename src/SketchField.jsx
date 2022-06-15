@@ -10,7 +10,8 @@ import DefaultTool from "./tools/defaul-tool";
 import Select from "./tools/Select";
 import Pencil from "./tools/Pencil";
 import EraseBrush from "./tools/Erase";
-import Triangle from "./tools/Triangle"
+import Triangle from "./tools/Triangle";
+import Star from "./tools/Star"
 import Line from "./tools/Line";
 import Rectangle from "./tools/Rectangle";
 import RectangleLabel from "./tools/Rectangle/rectangle-label";
@@ -118,6 +119,7 @@ class SketchField extends PureComponent {
     this._tools[Tool.Pencil] = new Pencil(fabricCanvas);
     this._tools[Tool.EraseBrush] = new EraseBrush(fabricCanvas);
     this._tools[Tool.Triangle] = new Triangle(fabricCanvas);
+    this._tools[Tool.Star] = new Star(fabricCanvas);
     this._tools[Tool.Line] = new Line(fabricCanvas);
     this._tools[Tool.Arrow] = new Arrow(fabricCanvas);
     this._tools[Tool.Rectangle] = new Rectangle(fabricCanvas);
@@ -506,7 +508,6 @@ class SketchField extends PureComponent {
           canvas.isDrawingMode = canvas.selection = false;
           canvas.forEachObject((o) => (o.selectable = o.evented = false));
         }
-        this._resize(null, 1345, 673)
         canvas.renderAll();
         if (this.props.onChange) {
           this.props.onChange();
@@ -639,6 +640,18 @@ class SketchField extends PureComponent {
       top: (canvas.getHeight() - iText.height) * 0.5,
     };
     Object.assign(options, opts);
+    iText.set({
+      left: options.left,
+      top: options.top,
+    });
+
+    canvas.add(iText);
+  };
+  
+  addTextToPoint = (text, options = {}) => {
+    let canvas = this._fc;
+    let iText = new fabric.IText(text, options);
+    
     iText.set({
       left: options.left,
       top: options.top,

@@ -11,4 +11,5 @@ export default {
   DefaultTool: "default-tool",
   EraseBrush: "eraseBrush",
   Triangle: "triangle",
+  Star: "star",
 };
