@@ -658,6 +658,8 @@ class SketchField extends PureComponent {
     });
 
     canvas.add(iText);
+    
+    return iText;
   };
 
   callEvent = (e, eventFunction) => {
