@@ -668,12 +668,17 @@ class SketchField extends PureComponent {
 
   componentDidMount = () => {
     let { tool, value, undoSteps, defaultValue, backgroundColor } = this.props;
-
+    fabric.maxCacheSideLimit = 128;
+    fabric.minCacheSideLimit = 16;
+    fabric.perfLimitSizeTotal = 197152;
+    fabric.Object.prototype.objectCaching = false;
+    fabric.Object.prototype.noScaleCache = true;
+    fabric.Object.prototype.statefullCache = false;
     let canvas = (this._fc = new fabric.Canvas(
       this._canvas, {
         objectCaching: false,
         statefullCache: false,
-        noScaleCache: false,
+        noScaleCache: true,
       } /*, {
          preserveObjectStacking: false,
          renderOnAddRemove: false,
@@ -767,8 +772,8 @@ class SketchField extends PureComponent {
     let canvasDivStyle = Object.assign(
       {},
       style ? style : {},
-      width ? { width: width } : {},
-      height ? { height: height } : { height: 512 }
+      width ? { width: width } : { width: 1 },
+      height ? { height: height } : { height: 1 }
     );
     return (
       <div
